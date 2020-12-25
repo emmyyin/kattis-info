@@ -1,15 +1,16 @@
-# kattis-web-scraper
+# kattis-info
 
-This program can be used to get your Kattis score and ranking from the command line. As of now only login through a Google-account is possible.
+This script can be used to get your Kattis score and ranking from the command line. As of now only login through a Google-account is possible.
 
 ## How to use
 #### Set up
 This program uses
 
-- `Python`
+- `Python 2.6, 2.7 or 3.3+`
 - `Selenium`
+- `Chromedriver`
 
-Either Python 2.6, 2.7 or 3.3+ is required to install Selenium. More information can be found [HERE](https://selenium-python.readthedocs.io/installation.html). This needs to be installed in order to run the program.
+More information about Selenium can be found [HERE](https://selenium-python.readthedocs.io/installation.html) and about Chromedriver [HERE](https://sites.google.com/a/chromium.org/chromedriver/downloads). This needs to be installed in order to run the program.
 
 #### Run program
 Clone and navigate to repo from the command line and run:
@@ -21,6 +22,6 @@ You will be prompted to enter your google-account credentials. After correct inp
 
 ## TODO
 #### Future features
-- [ ] Add error handling (and hide the user input)
+- [ ] Add error handling
 - [ ] Ability to choose how to login
 - [ ] Get all solved problems
