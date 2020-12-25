@@ -20,6 +20,7 @@ username = input("Enter your google email or phone number:\n")
 password = getpass.getpass(prompt="Enter your google password:\n")
 score = ""
 ranking = ""
+solved = {}
 
 driver = webdriver.Chrome()
 driver.get(url)
@@ -39,5 +40,14 @@ score = driver.find_element_by_xpath('//*[@id="wrapper"]/div/div[1]/section/div/
 ranking = driver.find_element_by_xpath('//*[@id="wrapper"]/div/div[1]/section/div/div/div[2]/div/table/tbody/tr[2]/td[1]').text
 
 print("Score:", score, ", Ranking:", ranking)
+
+driver.get(url + "/problems?show_solved=on&show_tried=off&show_untried=off")
+time.sleep(1)
+solved = driver.find_elements_by_class_name('name_column')
+
+for problem in solved:
+    # TODO: Get problem names and URLs
+    print("found")
+
 
 driver.quit()
