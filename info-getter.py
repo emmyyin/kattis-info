@@ -1,7 +1,12 @@
 import getpass
 import time
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
 
 url = "https://open.kattis.com"
 
@@ -22,24 +27,45 @@ score = ""
 ranking = ""
 solved = {}
 
-driver = webdriver.Chrome()
-driver.get(url)
+options = webdriver.ChromeOptions()
+options.add_argument("start-maximized");
+options.add_argument("disable-infobars")
+options.add_argument("--disable-extensions")
 
-driver.find_element_by_xpath('//*[@id="wrapper"]/header/div/div/div[2]/nav/ul/li[2]/a').click()
+driver = webdriver.Chrome(options=options)
+
+driver.get(url + "/login")
 driver.find_element_by_xpath('//*[@id="wrapper"]/div/div/section/div[2]/div[2]/div/form[4]/button').click()
 
 # Login to Kattis through Google
 driver.find_element_by_xpath('//*[@id="identifierId"]').send_keys(username)
 driver.find_element_by_xpath('//*[@id="identifierNext"]/div/button').click()
-time.sleep(1)
-driver.find_element_by_xpath('//*[@id="password"]/div[1]/div/div[1]/input').send_keys(password)
-driver.find_element_by_id("passwordNext").click()
-time.sleep(1)
 
-score = driver.find_element_by_xpath('//*[@id="wrapper"]/div/div[1]/section/div/div/div[2]/div/table/tbody/tr[2]/td[2]').text
-ranking = driver.find_element_by_xpath('//*[@id="wrapper"]/div/div[1]/section/div/div/div[2]/div/table/tbody/tr[2]/td[1]').text
+try:
+    #Wait up to 5s until page loaded
+    element = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.ID, 'passwordNext'))
+    )
+except TimeoutException:
+    print("Timed out waiting for page to load")
+finally:
+    driver.find_element_by_xpath('//*[@id="password"]/div[1]/div/div[1]/input').send_keys(password)
+    element.click()
 
-print("Score:", score, ", Ranking:", ranking)
+
+try:
+    #Wait up to 5s until page loaded
+    WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.XPATH, '//ul[@class="profile-header-list"]'))
+    )
+except TimeoutException:
+    print("Timed out waiting for page to load")
+finally:
+    score = driver.find_element_by_xpath('//ul[@class="profile-header-list"]/li[1]').text
+    ranking = driver.find_element_by_xpath('//ul[@class="profile-header-list"]/li[2]').text
+
+
+print(score, ranking)
 
 driver.get(url + "/problems?show_solved=on&show_tried=off&show_untried=off")
 time.sleep(1)
