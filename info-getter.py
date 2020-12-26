@@ -1,5 +1,4 @@
 import getpass
-import time
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
@@ -28,12 +27,7 @@ score = ""
 ranking = ""
 solved = {}
 
-options = webdriver.ChromeOptions()
-options.add_argument("start-maximized");
-options.add_argument("disable-infobars")
-options.add_argument("--disable-extensions")
-
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome()
 
 driver.get(url + "/login")
 driver.find_element_by_xpath('//*[@id="wrapper"]/div/div/section/div[2]/div[2]/div/form[4]/button').click()
@@ -77,10 +71,16 @@ while trying:
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.ID, 'problem_list_wrapper'))
         )
-        solved = driver.find_elements_by_class_name('name_column')
-        for problem in solved:
+        solved_problems = driver.find_elements_by_class_name('name_column')
+        print("Solved:")
+        for problem in solved_problems:
             # TODO: Get problem names and URLs
-            print("found")
+            name = problem.find_element_by_xpath('.//a').text
+            if name != "SOLVED":
+                link = problem.find_element_by_xpath('.//a').get_attribute('href')
+                solved.update({name:link})
+                print(name, link)
+
     except TimeoutException:
         print("Timed out waiting for page to load")
         driver.quit()
