@@ -1,6 +1,6 @@
 # kattis-info
 
-This script can be used to get your Kattis score and ranking from the command line. As of now only login through a Google-account is possible.
+This script can be used to get your Kattis score and ranking from the command line, along with all the problems you have solved. As of now only login through a Google-account is possible.
 
 ## How to use
 #### Set up
