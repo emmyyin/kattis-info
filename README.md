@@ -22,6 +22,6 @@ You will be prompted to enter your google-account credentials. After correct inp
 
 ## TODO
 #### Future features
+- [X] Get all solved problems
 - [ ] Add error handling
 - [ ] Ability to choose how to login
-- [ ] Get all solved problems
